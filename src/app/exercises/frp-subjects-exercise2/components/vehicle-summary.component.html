@@ -1,0 +1,55 @@
+<div class="category">
+  <div class="category-title total">Total data</div>
+  <div class="summary-items">
+    <text-summary-item [title]="'Vehicles count'"
+                       class="dark-grey"
+                       [value]="totalVehicles$ | async">
+    </text-summary-item>
+
+    <text-summary-item [title]="'Speed average (km/h)'"
+                       [value]="(speedAvg$ | async)?.toFixed(2)"
+                       class="dark-grey"></text-summary-item>
+
+    <text-summary-item [title]="'Violations (speed > 120)'"
+                       class="dark-grey"
+                       [value]="speedViolations$ | async"></text-summary-item>
+  </div>
+</div>
+
+<div class="vehicles-data">
+  <div class="category-title total">Min / Max speed</div>
+  <div class="summary-items">
+    <text-summary-item [title]="'Min (km/h)'"
+                       [value]="(minMax$ | async)?.min"
+                       class="green"></text-summary-item>
+
+    <text-summary-item [title]="'Max (km/h)'" style="padding-right: 590px"
+                       [value]="(minMax$ | async)?.max"
+                       class="green"></text-summary-item>
+  </div>
+</div>
+
+<div class="vehicles-data">
+  <div class="category-title total">Vehicles data</div>
+  <div class="summary-items">
+    <summary-item
+        [iconClass]="'fa fa-car'"
+        class="bg"
+        [vehicles$]="cars$"></summary-item>
+
+    <summary-item
+        [iconClass]="'fa fa-truck'"
+        class="bg"
+        [vehicles$]="trucks$"></summary-item>
+
+    <summary-item
+        [iconClass]="'fa fa-motorcycle'"
+        class="bg"
+        [vehicles$]="bikes$"></summary-item>
+  </div>
+</div>
+
+<div class="vehicles-per-minute">
+  <div class="category-title total" style="height: 90px">Vehicles per minute</div>
+  <vehicles-minute-summary [vehicles$]="service.vehicles$"></vehicles-minute-summary>
+</div>

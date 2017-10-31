@@ -1,0 +1,66 @@
+.content {
+    margin: 0 -20px;
+}
+
+.filters{
+    display: flex;
+    align-items: center;
+    background-color: #1e2e4a;
+    height: 40px;
+
+    .title{
+        font-size: 20px;
+        font-weight: bold;
+        color: #FFF;
+        padding: 0 50px 0 20px;
+    }
+
+    label{
+        padding-right: 20px;
+        color: #FFF;
+        padding-top: 3px;
+    }
+
+    select {
+        margin-right: 50px;
+        min-width: 100px;
+        height: 23px;
+        border-radius: 5px;
+        margin-top: 4px;
+    }
+
+    .clear-filters {
+        margin-top: 3px;
+        border-radius: 5px;
+        background-color: white;
+        padding: 0 10px 3px 10px;
+        color: #0036f8;
+        font-weight: bold;
+        height: 20px;
+        cursor: pointer;
+    }
+}
+
+.shapes {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.shape {
+    width: 50px;
+    height: 50px;
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 26px;
+}
+
+.Circle {
+    border-radius: 50%;
+    background-color: #F1C75E;
+}
+
+.Square {
+    background-color: #00a2f8;
+}

@@ -1,0 +1,18 @@
+<header>
+  <img src="assets/erni.png">
+
+  <nav>
+    <app-tab *ngFor="let tab of tabs"
+             [tab]="tab"
+             [class.selected]="selectedTab === tab.index"
+             (clicked)="selectTab(tab)"></app-tab>
+  </nav>
+</header>
+
+<div class="components">
+  <fp-introduction *ngIf="selectedTab===TabIndices.FP_INTRODUCTION"></fp-introduction>
+  <fp-exercise *ngIf="selectedTab===TabIndices.FP_EXERCISE"></fp-exercise>
+  <rp-exercise *ngIf="selectedTab===TabIndices.RP_EXERCISE"></rp-exercise>
+  <frp-subjects-exercise1 *ngIf="selectedTab===TabIndices.FRP_SUBJECTS_EXERCISE_1"></frp-subjects-exercise1>
+  <frp-subjects-exercise2 *ngIf="selectedTab===TabIndices.FRP_SUBJECTS_EXERCISE_2"></frp-subjects-exercise2>
+</div>

@@ -1,0 +1,23 @@
+<div class="content">
+    <h2 class="subtitle">Reactive Filtering</h2>
+    <div class="exercise">
+        <div class="filters">
+            <div class="title">Filters</div>
+            <label for="shapeFilter">Shape</label>
+            <select id="shapeFilter" #shapeSelect (change)="selectedShapeFilter$.next($event.target['value'])">
+                <option *ngFor="let type of shapeTypes" [value]="type">{{type}}</option>
+            </select>
+
+            <label for="valueFilter">Value</label>
+            <select id="valueFilter" #valueSelect (change)="selectedValueFilter$.next($event.target['value'])">
+                <option *ngFor="let v of shapeValues" [value]="v">{{v}}</option>
+            </select>
+
+            <div class="clear-filters" (click)="clearFilter()">Clear filters</div>
+        </div>
+
+        <div class="shapes">
+            <div class="shape {{shape.type}}" *ngFor="let shape of filteredShapes$ | async">{{shape.value}}</div>
+        </div>
+    </div>
+</div>

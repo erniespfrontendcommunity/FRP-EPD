@@ -1,0 +1,23 @@
+.grid {
+  background-color: #033D6B;
+  opacity: 0.8;
+  width: 100vw;
+  color: white;
+  display: flex;
+  height: 90px;
+  align-items: flex-end;
+
+  .categories {
+    padding-left: 10px;
+    width: 100px;
+  }
+}
+
+.summary {
+width: 60px;
+
+  .minute {
+    font-size: 12px;
+    color: #F1C75E;
+  }
+}

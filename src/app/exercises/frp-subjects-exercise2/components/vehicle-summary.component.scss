@@ -1,0 +1,56 @@
+.summary-items {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+
+  text-summary-item{
+    flex-grow: 1;
+    &.dark-grey {
+      background-color: #3E4347;
+      opacity: 0.8;
+    }
+
+    &.green {
+      background-color: #066b52;
+      opacity: 0.8;
+    }
+  }
+
+  summary-item{
+    flex-grow: 1;
+    &.bg {
+      background-color: #607d8b;
+      opacity: 0.8;
+    }
+  }
+}
+
+.category {
+  margin-top: 20px;
+  display: flex;
+}
+
+.vehicles-data {
+  margin: 50px 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.vehicles-per-minute{
+  display: flex;
+  width: 100%;
+}
+
+.category-title {
+  height: 80px;
+  font-size: 20px;
+  min-width: 230px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.total {
+  background-color: #F2CA54;
+}
