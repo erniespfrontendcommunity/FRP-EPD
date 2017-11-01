@@ -20,4 +20,3 @@ export const getRangeValue = (min, max) => Math.floor(Math.random() * (max - min
 
 export const generateVehicle = () => new Vehicle(vehicleTypes[getRangeValue(0, vehicleTypes.length - 1)], getRangeValue(60, 160));
 
-export const countObservableItems = (obs: Observable<any>) => obs.scan(total => total + 1, 0);

@@ -4,7 +4,7 @@
     <div>Trucks</div>
     <div>Bikes</div>
   </div>
-  <div class="summary" *ngFor="let summary of getLast10(summary$ | async)">
+  <div class="summary" *ngFor="let summary of getLast15(summary$ | async)">
     <div class="minute">{{formatDate(summary.time)}}</div>
     <div>{{summary.car}}</div>
     <div>{{summary.truck}}</div>

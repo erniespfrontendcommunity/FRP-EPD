@@ -11,7 +11,6 @@ import { Component, OnInit } from '@angular/core';
 export class FRPSubjectsExercise2Component implements OnInit {
 
   ngOnInit() {
-    console.clear();
   }
 
 }

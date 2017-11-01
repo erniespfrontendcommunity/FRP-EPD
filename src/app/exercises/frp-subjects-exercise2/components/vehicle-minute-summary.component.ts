@@ -7,6 +7,13 @@ import { Observable } from 'rxjs/Observable';
 import { Vehicle } from '../utils/model';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
+interface Summary {
+    time: Date;
+    car: number;
+    truck: number;
+    bike: number;
+}
+
 @Component({
     selector: 'vehicles-minute-summary',
     templateUrl: 'vehicle-minute-summary.component.html',
@@ -20,13 +27,7 @@ export class VehicleMinuteSummaryComponent implements OnInit {
 
     ngOnInit() {
 
-        this.vehicles$.bufferTime(60000)
-            .map(vehicles => summaryByVehicleType(vehicles))
-            .map(summary => [...this.summary$.getValue(), summary])
-            .subscribe(this.summary$);
     }
-
-    getLast10 = (items: Array<any>) => items.reverse().slice(0, 15);
 
     formatDate(date:Date) {
         let hours: string | number = date.getHours();
@@ -35,23 +36,6 @@ export class VehicleMinuteSummaryComponent implements OnInit {
         minutes = minutes < 10 ? '0' + minutes : minutes;
         return hours + ':' + minutes;
     }
-
 }
 
-interface Summary {
-    time: Date;
-    car: number;
-    truck: number;
-    bike: number;
-}
-
-const summaryByVehicleType = vehicles => vehicles.reduce((s: Summary, vehicle) => {
-    s[vehicle.type]++;
-    return s;
-}, {
-    time: new Date(),
-    car: 0,
-    truck: 0,
-    bike: 0
-});
 

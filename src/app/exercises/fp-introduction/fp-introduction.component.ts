@@ -56,41 +56,5 @@ books: Array<Book> = [ { id: 1, title: "C# 6.0", author: "Andrew Troelsen", rati
 
     ngOnInit() {
         console.clear();
-        console.log(rating(books[0]));
-        console.log(titleReleasedin2016(books));
-        console.log(mean(books.map(b => b.rating)));
-        console.log(stars(books[0].rating));
-        console.log(listStars(books));
     }
 }
-//Pure functions adn currying exercise
-const get = property => book => book[property];
-
-const rating = get('rating');
-
-//Function composition exercise
-const compose = (...fns) => x => fns.reduce((y, f) => f(y), x);
-const releasedIn2016 = (books: Array<Book>) => books.find(b => b.releaseDate === 2016);
-const title = (b: Book) => b.title;
-
-const titleReleasedin2016 = compose(releasedIn2016, title);
-
-
-const fork = (join, func1, func2) => val => join(func1(val), func2(val));
-
-const divide = (a, b) => a / b;
-
-const sum = (items: Array<number>) => items.reduce((acc, cur) => acc + cur, 0);
-
-const count = items => items.length;
-
-const mean = fork(divide, sum, count);
-
-
-//High Order Functions exercise
-
-const repeat = initial => funct => times => times > 0 ? repeat(funct(initial))(funct)(times - 1) : initial;
-
-const stars = repeat('')(_ => _ + '*');
-
-const listStars = (books: Array<Book>) => books.map(b => `${b.title}: ${stars(b.rating)}`);
