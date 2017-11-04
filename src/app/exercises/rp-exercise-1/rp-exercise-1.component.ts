@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 const simulatedRequest = (term: string) => Observable.timer(1000).map(_ => `Search result from -> ${term} request`);
 
 @Component({
-    selector:    'rp-exercise',
+    selector:    'rp-exercise-1',
     template: `<h2 class="subtitle">Reactive text input</h2>
     <div class="exercise"><div>
       We want to simulate a request from a input text value:
@@ -44,7 +44,7 @@ const simulatedRequest = (term: string) => Observable.timer(1000).map(_ => `Sear
         }
     `]
 })
-export class RPExerciseComponent implements AfterViewInit {
+export class RPExercise1Component implements AfterViewInit {
     @ViewChild('input') input: ElementRef;
     @ViewChild('results') results: ElementRef;
 

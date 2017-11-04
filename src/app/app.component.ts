@@ -4,7 +4,8 @@ import { TabData } from './tab/tab.component';
 enum TabIndices {
     FP_INTRODUCTION,
     FP_EXERCISE,
-    RP_EXERCISE,
+    RP_EXERCISE_1,
+    RP_EXERCISE_2,
     FRP_SUBJECTS_EXERCISE_1,
     FRP_SUBJECTS_EXERCISE_2
 }
@@ -22,9 +23,10 @@ export class AppComponent {
     tabs =  [
         {label: 'FP - Introduction', index:TabIndices.FP_INTRODUCTION},
         {label: 'FP - Exercise', index: TabIndices.FP_EXERCISE},
-        {label: 'Reactive Programming', index:TabIndices.RP_EXERCISE},
-        {label: 'FRP: Subjects Exercise 1',  index:TabIndices.FRP_SUBJECTS_EXERCISE_1},
-        {label: 'FRP: Subjects Exercise 2', index:TabIndices.FRP_SUBJECTS_EXERCISE_2}];
+        {label: 'RP: Exercise 1', index:TabIndices.RP_EXERCISE_1},
+        {label: 'RP: Exercise 2', index:TabIndices.RP_EXERCISE_2},
+        {label: 'FRP: Exercise 1',  index:TabIndices.FRP_SUBJECTS_EXERCISE_1},
+        {label: 'FRP: Exercise 2', index:TabIndices.FRP_SUBJECTS_EXERCISE_2}];
 
     selectTab(tab: TabData) {
         localStorage.setItem('selectedTab', ''+tab.index);
