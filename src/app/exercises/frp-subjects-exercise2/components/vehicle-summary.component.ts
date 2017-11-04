@@ -4,7 +4,7 @@ import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/mergeMap';
 import { Observable } from 'rxjs/Observable';
-import { MinMaxValue, Vehicle } from '../utils/model';
+import { BIKE, CAR, countObservableItems, getMean, MinMaxValue, TRUCK, Vehicle } from '../utils/model';
 import { Service } from '../utils/service';
 
 @Component({
@@ -30,5 +30,28 @@ export class VehiclesSummaryComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.totalVehicles$ = countObservableItems(this.vehicles$);
+        this.speedViolations$ = countObservableItems(this.vehicles$.filter(v => v.speed > 120));
+
+        const sumSpeeds$ = this.vehicles$.scan((total, cur) => total + cur.speed, 0);
+
+        this.speedAvg$ = getMean(this.totalVehicles$, this.vehicles$);
+
+        this.minMax$ = this.vehicles$
+                           .scan((acc, cur) => <MinMaxValue>{ max: Math.max(acc.max, cur.speed),
+                                                              min: Math.min(acc.min, cur.speed)},
+                               <MinMaxValue>{min: 1000, max: 0});
+
+
+
+        this.cars$ = this.vehicles$.filter(typeSelector(CAR));
+
+        this.bikes$ = this.vehicles$.filter(typeSelector(BIKE));
+
+        this.trucks$ = this.vehicles$.filter(typeSelector(TRUCK));
     }
 }
+
+const selector = property => value => vehicle => vehicle[property] === value;
+
+const typeSelector = selector('type');

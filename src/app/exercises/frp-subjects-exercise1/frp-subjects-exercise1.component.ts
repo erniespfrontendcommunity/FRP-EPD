@@ -22,6 +22,20 @@ function generateShapes(length): Shape[] {
     });
 }
 
+
+const getShapeValue = (s: Shape) => s.value % 2 === 0 ? 'Even' : 'Odd';
+
+function byTypeFilter(type: ShapeType): Filter {
+    return (s: Shape) => type === 'All' || s.type === type;
+}
+
+function byValueFilter(value: ShapeValue): Filter {
+    return (s: Shape) => value === 'All' || getShapeValue(s) === value;
+}
+
+const multipleFilter = (filters: Filter[]) => (s: Shape) => filters.every(f => f(s));
+
+
 @Component({
     selector:    'frp-subjects-exercise1',
     templateUrl: 'frp-subjects-exercise1.component.html',
@@ -41,6 +55,12 @@ export class FRPSubjectsExercise1Component implements OnInit {
     shapeValues : ShapeValue[] = ['All', 'Even', 'Odd' ];
 
     ngOnInit() {
+
+        Observable.combineLatest(this.selectedShapeFilter$, this.selectedValueFilter$)
+            .map(([shapeFilter, valueFilter]) => this.shapes.filter(
+                multipleFilter([byTypeFilter(shapeFilter), byValueFilter(valueFilter)]))
+            )
+            .subscribe(this.filteredShapes$);
     }
 
     clearFilter(){

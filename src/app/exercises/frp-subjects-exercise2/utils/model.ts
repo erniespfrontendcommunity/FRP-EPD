@@ -20,3 +20,12 @@ export const getRangeValue = (min, max) => Math.floor(Math.random() * (max - min
 
 export const generateVehicle = () => new Vehicle(vehicleTypes[getRangeValue(0, vehicleTypes.length - 1)], getRangeValue(60, 160));
 
+export const countObservableItems = (obs: Observable<any>) => obs.scan(total => total + 1, 0);
+
+export function getMean(totalVehicles$, vehicles$) {
+
+    const sumSpeeds$ = vehicles$.scan((total, cur) => total + cur.speed, 0);
+
+    return totalVehicles$.combineLatest(sumSpeeds$)
+                         .map(([numVehicles, sumSpeed]) => sumSpeed / numVehicles);
+}

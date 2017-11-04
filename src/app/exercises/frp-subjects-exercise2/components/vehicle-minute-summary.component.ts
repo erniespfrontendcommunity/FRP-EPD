@@ -26,9 +26,11 @@ export class VehicleMinuteSummaryComponent implements OnInit {
     summary$: BehaviorSubject<Summary[]> = new BehaviorSubject([]);
 
     ngOnInit() {
-
+        this.vehicles$.bufferTime(60000)
+            .map(vehicles => summaryByVehicleType(vehicles))
+            .map(summary => [...this.summary$.getValue(), summary])
+            .subscribe(this.summary$);
     }
-
     formatDate(date:Date) {
         let hours: string | number = date.getHours();
         let minutes: string | number = date.getMinutes();
@@ -36,6 +38,17 @@ export class VehicleMinuteSummaryComponent implements OnInit {
         minutes = minutes < 10 ? '0' + minutes : minutes;
         return hours + ':' + minutes;
     }
+    getLast15 = (items: Array<any>) => items.reverse().slice(0, 15);
 }
 
+const summaryByVehicleType = vehicles => vehicles.reduce((s: Summary, vehicle) => {
+    const sum = {...s};
+    sum[vehicle.type]++;
+    return sum;
+}, {
+    time: new Date(),
+    car: 0,
+    truck: 0,
+    bike: 0
+});
 

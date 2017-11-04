@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-const simulatedRequest = (term: string) => Observable.timer(1000).map(_ => `Search result from -> ${term} request`);
+const simulatedRequest = (term: string) => Observable.of(0).map(_ => `Search result from -> ${term} request`);
 
 @Component({
     selector:    'rp-exercise-1',
@@ -49,7 +49,13 @@ export class RPExercise1Component implements AfterViewInit {
     @ViewChild('results') results: ElementRef;
 
     ngAfterViewInit() {
-    //CODE MUST BE PLACED HERE
 
+        Observable.fromEvent(this.input.nativeElement, 'keyup')
+                  .debounceTime(300)
+                  .map((ev: KeyboardEvent) => ev.target['value'])
+                  .distinctUntilChanged()
+                  .filter(x => x.length > 2)
+                  .switchMap(_ => simulatedRequest(_))
+                  .subscribe(_ => this.results.nativeElement.innerText = _);
     }
 }
