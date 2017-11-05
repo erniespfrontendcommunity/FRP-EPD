@@ -4,9 +4,8 @@ import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/mergeMap';
 import { Observable } from 'rxjs/Observable';
-import { MinMaxValue, Vehicle, countObservableItems, CAR, BIKE, TRUCK, averageSpeed, isCar, isTruk, isBike } from '../utils/model';
+import { BIKE, CAR, countObservableItems, getMean, MinMaxValue, TRUCK, Vehicle } from '../utils/model';
 import { Service } from '../utils/service';
-import { Subscriber, BehaviorSubject } from 'rxjs';
 
 @Component({
     selector: 'vehicles-summary',
@@ -32,28 +31,27 @@ export class VehiclesSummaryComponent implements OnInit {
 
     ngOnInit() {
         this.totalVehicles$ = countObservableItems(this.vehicles$);
-        
-        this.speedViolations$ = countObservableItems(
-            this.vehicles$
-            .filter(x=> x.speed > 120)
-        );
+        this.speedViolations$ = countObservableItems(this.vehicles$.filter(v => v.speed > 120));
 
-        this.speedAvg$ = averageSpeed(this.vehicles$)
-            // .combineLatest(sumSpeeds(this.vehicles$), (totalNumber, addedSpeed) => addedSpeed / totalNumber)
+        const sumSpeeds$ = this.vehicles$.scan((total, cur) => total + cur.speed, 0);
 
-        this.minMax$ = getMinSpeed(this.vehicles$)
-            .combineLatest(getMaxSpeed(this.vehicles$), (min, max) => {return {min, max}})
+        this.speedAvg$ = getMean(this.totalVehicles$, this.vehicles$);
 
-        this.cars$ = this.vehicles$.filter(isCar);
-        this.trucks$ = this.vehicles$.filter(isTruk);
-        this.bikes$ = this.vehicles$.filter(isBike);
+        this.minMax$ = this.vehicles$
+                           .scan((acc, cur) => <MinMaxValue>{ max: Math.max(acc.max, cur.speed),
+                                                              min: Math.min(acc.min, cur.speed)},
+                               <MinMaxValue>{min: 1000, max: 0});
+
+
+
+        this.cars$ = this.vehicles$.filter(typeSelector(CAR));
+
+        this.bikes$ = this.vehicles$.filter(typeSelector(BIKE));
+
+        this.trucks$ = this.vehicles$.filter(typeSelector(TRUCK));
     }
 }
 
-// const getSpeedSelector = (vehicle: Vehicle) => 
-const getMinSpeed = (obs: Observable<Vehicle>) => obs.scan((acc, cur) => acc < cur.speed ? acc : cur.speed, 10000);
-const getMaxSpeed = (obs: Observable<Vehicle>) => obs.scan((acc, cur) => acc > cur.speed ? acc : cur.speed, 0);
+const selector = property => value => vehicle => vehicle[property] === value;
 
-// const isCar = (vehicle: Vehicle) => vehicle.type == CAR;
-// const isBike = (vehicle: Vehicle) => vehicle.type == BIKE;
-// const isTruk = (vehicle: Vehicle) => vehicle.type == TRUCK;
+const typeSelector = selector('type');

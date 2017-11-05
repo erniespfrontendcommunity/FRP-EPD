@@ -13,39 +13,42 @@ const books: Array<Book> = [ { id: 1, title: "C# 6.0", author: "Andrew Troelsen"
     { id: 3, title: "Pro Angular 2", author: "Adam Freeman", rating: 4, releaseDate: 2015},
     { id: 4, title: "Pro ASP.NET", author: "Adam Freeman", rating: 2, releaseDate: 2001} ];
 
+
+
 const get = prop => x => x[prop];
-const getRating = get('rating');
-    
-// const composeOf2 = (fun1, fun2) => x => fun1(fun2(x));
-const compose = (...funcs) => x => funcs.reduce((f1, f2) => f2(f1), x);
 
-// exercise 2
-const getTitle = get('title');
-const getReleaseDate = get('releaseDate');
-const isEqual = value1 => value2 => value1 === value2;
-const isEqual2016 = isEqual(2016);
-const bookReleaseDateIs2016 = compose(getReleaseDate, isEqual2016);
-// const titleReleaseDateIs2016 = compose(bookReleaseDateIs2016, getTitle);
+const rating = get('rating');
 
-const releaseDateIs2016FromBooks = (books: Book[]) => books.find(bookReleaseDateIs2016);
-const titleReleaseDateIs2016FromBooks = compose(releaseDateIs2016FromBooks, getTitle);
 
-// exercise 2: average
-// const averageBookRating = (books: Book[]) => 
-const fork = (join, func1, func2) => param => join(func1(param), func2(param));
-const divide = (a,b) => a/b;
-const sum = items => items.reduce((acc, cur) => acc + cur, 0);
-const meanSimplified = items => items.reduce((acc, cur) => acc + cur, 0) / items.length;
-const averageBookRating = books => compose(getRating, meanSimplified);
-const count = items => items.length;
-const mean = fork(divide, sum, count);
+///////////////////////////
 
-// ex 3: stars
-const writeStars = (number: number) => new Array(number).reduce((acc, cur) => acc + "*", "");
-const writeBookStars = (book: Book) => `${book.title}: ${writeStars(book.rating)}`;  
-const writeBooksStars = (books: Book[]) => books.forEach(writeBookStars);
-const print = value => console.log(value);
-const printBookStars = compose(writeBookStars, print);
+const compose = (...fncs) => x => fncs.reduce((y, f) => f(y), x);
+
+const title = get('title');
+
+const releasedIn2016 = (books: Array<Book>) => books.find(b => b.releaseDate === 2016);
+
+const titleReleasedIn2016 = compose(releasedIn2016, title);
+
+/////////////////////////////
+
+//const fork = (join, func1, func2) => param => join(func1(param), func2(param));
+
+//const divide = (a, b) => a / b;
+
+const mean = books => books.reduce((acc, cur) => acc + cur.rating, 0) / books.length;
+
+//const count = items => items.length;
+
+//const mean = fork(divide, sum, count);
+
+/////////////////////////////////////
+
+const repeat = initial => funct => times => times > 0 ? repeat(funct(initial))(funct)(times - 1) : initial;
+
+const stars = repeat('')(_ => _ + '*');
+
+
 
 @Component({
     selector: 'fp-introduction',
@@ -91,19 +94,16 @@ books: Array<Book> = [ { id: 1, title: "C# 6.0", author: "Andrew Troelsen", rati
     ngOnInit() {
         console.clear();
 
-        // Exercise 1
-        // books.forEach((book) => console.log(getRating(book)));
 
-        // Exercise 2
-        // console.log("title");
-        // console.log(titleReleaseDateIs2016FromBooks(books));
+        //console.log(rating(books[1]));
 
-        // Exercise 2: average book rating
-        // console.log(averageBookRating(books));
+        console.log(titleReleasedIn2016(books));
 
-        // Ex 3
-        // books.map(printBookStars);
-        // writeBooksStars(books);
+        console.log(mean(books));
+
+
+        console.log(stars(books[0].rating));
+
+        console.log(books.map(book => book.title + ': ' + stars(book.rating)));
     }
-
 }

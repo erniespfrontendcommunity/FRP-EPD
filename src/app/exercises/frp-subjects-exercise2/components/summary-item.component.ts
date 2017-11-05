@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Vehicle, countObservableItems, averageSpeed } from '../utils/model';
+import { countObservableItems, getMean, Vehicle } from '../utils/model';
 
 @Component({
     selector: 'summary-item',
@@ -47,7 +47,7 @@ export class SummaryItemComponent implements OnInit{
 
     ngOnInit() {
         this.counter$ = countObservableItems(this.vehicles$);
-        this.speedAvg$ = averageSpeed(this.vehicles$);
 
+        this.speedAvg$ = getMean(this.counter$, this.vehicles$);
     }
 }

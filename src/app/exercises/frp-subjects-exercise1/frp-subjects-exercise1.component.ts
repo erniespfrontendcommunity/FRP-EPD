@@ -9,8 +9,6 @@ type ShapeValue = 'All' | 'Even' | 'Odd';
 
 const AVAILABLE_TYPES: ShapeType[] = ['Square', 'Circle'];
 
-type ShapeFilter = { type: ShapeType, value: ShapeValue};
-
 type Filter = (s: Shape) => boolean;
 
 interface Shape {
@@ -23,6 +21,20 @@ function generateShapes(length): Shape[] {
         return {value: i + 1, type: _.sample(AVAILABLE_TYPES)};
     });
 }
+
+
+const getShapeValue = (s: Shape) => s.value % 2 === 0 ? 'Even' : 'Odd';
+
+function byTypeFilter(type: ShapeType): Filter {
+    return (s: Shape) => type === 'All' || s.type === type;
+}
+
+function byValueFilter(value: ShapeValue): Filter {
+    return (s: Shape) => value === 'All' || getShapeValue(s) === value;
+}
+
+const multipleFilter = (filters: Filter[]) => (s: Shape) => filters.every(f => f(s));
+
 
 @Component({
     selector:    'frp-subjects-exercise1',
@@ -43,26 +55,12 @@ export class FRPSubjectsExercise1Component implements OnInit {
     shapeValues : ShapeValue[] = ['All', 'Even', 'Odd' ];
 
     ngOnInit() {
-        this.selectedShapeFilter$
-            .combineLatest(this.selectedValueFilter$, (shape, value) => [shape, value])
-            // .filter(_ => filterValue())
-            .do(console.log)
-            .map(([shapeFilter, valueFilter]) => this.shapes
-                .filter(filterValue(valueFilter))
-                .filter(filterShape(shapeFilter))
+
+        Observable.combineLatest(this.selectedShapeFilter$, this.selectedValueFilter$)
+            .map(([shapeFilter, valueFilter]) => this.shapes.filter(
+                multipleFilter([byTypeFilter(shapeFilter), byValueFilter(valueFilter)]))
             )
             .subscribe(this.filteredShapes$);
-            // .subscribe(_ => {
-            //     // console.log(_)
-                
-            //     let filteredShapes = this.shapes
-            //         .filter(filterValue(_.value))
-            //         .filter(filterShape(_.type))
-
-            //     this.filteredShapes$.next(filteredShapes)
-            // });
-
-        
     }
 
     clearFilter(){
@@ -72,8 +70,3 @@ export class FRPSubjectsExercise1Component implements OnInit {
         this.selectedValueFilter$.next('All');
     }
 }
-
-const isOdd = (value: number) => value % 2 == 1;
-// const getShapeType = (shape: Shape) => 
-const filterValue = (valueFilter: ShapeValue) => (shape: Shape) => valueFilter == 'All' ? true : (valueFilter == 'Odd' ? isOdd(shape.value) : !isOdd(shape.value));
-const filterShape = (shapeFilter: ShapeType) => (shape: Shape) => shapeFilter == 'All' || shapeFilter == shape.type;
