@@ -35,4 +35,5 @@ export class TextSummaryItemComponent  {
     @Input() title: string;
     @Input() value: any;
     @Input() suffix: string;
+
 }
